@@ -1,7 +1,7 @@
 {
   "name": "Kaspi.kz",
   "short_name": "Kaspi.kz",
-  "start_url": "./index.html",
+  "start_url": "/my-id-app/index.html",
   "display": "standalone",
   "background_color": "#f5f5f5",
   "theme_color": "#2f80ff",
