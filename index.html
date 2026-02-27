@@ -2,7 +2,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Kaspi Docs</title>
 <link rel="manifest" href="manifest.json">
 
@@ -34,14 +36,40 @@ body, html {
 }
 
 /* Экран с удостоверением */
-#idScreen {
-  display: none;
-  width: 100vw;
-  height: 100vh;
-  background: #000;
-  justify-content: center;
-  align-items: center;
-}
+<div id="idScreen" style="display:none; flex-direction:column; height:100vh; background:#f4f4f4;">
+
+  <!-- Верхняя панель -->
+  <div style="
+      height:60px;
+      display:flex;
+      align-items:center;
+      padding:0 16px;
+      background:white;
+      font-weight:600;
+      font-size:18px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  ">
+      <div onclick="goBack()" style="margin-right:15px; font-size:22px;">‹</div>
+      Удостоверение личности
+  </div>
+
+  <!-- Фото зона -->
+  <div style="
+      flex:1;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      overflow:hidden;
+  ">
+
+      <div id="zoomContainer" style="touch-action:none;">
+          <img id="idPhoto" src="id.jpg" 
+          style="max-width:95vw; max-height:80vh; border-radius:16px; transition:0.1s;">
+      </div>
+
+  </div>
+
+</div>
 
 /* Контейнер для зума */
 .zoom-container {
@@ -124,3 +152,4 @@ container.addEventListener('touchmove', e => {
 
 </body>
 </html>
+
