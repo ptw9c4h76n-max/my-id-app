@@ -1,210 +1,126 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Моё Удостоверение">
-  <link rel="apple-touch-icon" href="icon.png">
-  <link rel="manifest" href="manifest.json">
-  <title>Удостоверение</title>
-  <link rel="stylesheet" href="style.css"> <!-- если есть CSS -->
-  <style>
-.card img{
-  width: 100vw;       /* ширина экрана */
-  height: 100vh;      /* высота экрана */
-  object-fit: contain; /* сохраняет пропорции */
-  border-radius: 0;   /* без скруглений */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kaspi Docs</title>
+<link rel="manifest" href="manifest.json">
+
+<style>
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont;
+  background: #f4f4f4;
+  overflow: hidden;
+}
+
+/* Главный экран меню */
+#home {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Экран с удостоверением */
+#idScreen {
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Контейнер для зума */
+.zoom-container {
+  width: 100%;
+  height: 100%;
+  touch-action: none; /* важно для pinch zoom */
+  overflow: hidden;
+  position: relative;
+}
+
+.zoom-container img {
+  max-width: 100%;
+  max-height: 100%;
+  transform-origin: center center;
+  transition: 0.1s ease-out;
 }
 </style>
 </head>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: -apple-system,BlinkMacSystemFont,sans-serif;
-            background: #f5f5f5;
-        }
-
-        .header {
-            text-align: center;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: 600;
-            background: white;
-        }
-
-        .tabs {
-            display: flex;
-            background: #e5e5e5;
-            margin: 15px;
-            border-radius: 25px;
-            padding: 4px;
-        }
-
-        .tab {
-            flex: 1;
-            padding: 8px;
-            text-align: center;
-            font-size: 14px;
-            border-radius: 20px;
-            cursor: pointer;
-        }
-
-            .tab.active {
-                background: white;
-                font-weight: 600;
-            }
-
-        .screen {
-            display: none;
-            padding: 15px;
-            padding-bottom: 150px;
-        }
-
-            .screen.active {
-                display: block;
-            }
-
-        .card img {
-            width: 100%;
-            border-radius: 15px;
-        }
-
-        /* КНОПКИ */
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 18px;
-            font-size: 17px;
-            font-weight: 600;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .primary {
-            background: #1976b6;
-            color: white;
-        }
-
-            .primary svg {
-                width: 24px;
-                height: 24px;
-                stroke: white;
-            }
-
-        .outline {
-            border: 2px solid #1976b6;
-            color: #1976b6;
-            background: transparent;
-        }
-
-            .outline svg {
-                width: 20px;
-                height: 20px;
-                stroke: #1976b6;
-            }
-
-        .bottom-container {
-            position: fixed;
-            bottom: 20px;
-            left: 15px;
-            right: 15px;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-
 <body>
 
-    <div class="header">Удостоверение личности</div>
+<div id="home">
+  <div class="card" onclick="showID()">
+    Удостоверение личности
+    <div>›</div>
+  </div>
+  <!-- здесь можно добавить другие пункты меню -->
+</div>
 
-    <div class="tabs">
-        <div class="tab active" onclick="showScreen('doc', this)">Документ</div>
-        <div class="tab" onclick="showScreen('req', this)">Реквизиты</div>
-    </div>
+<div id="idScreen">
+  <div class="zoom-container" id="zoomContainer">
+    <!-- фото удостоверения -->
+    <img id="idPhoto" src="id_new.jpeg">
+  </div>
+</div>
 
-    <!-- Документ -->
-    <div id="doc" class="screen active">
-        <div class="card">
-            <img src="https://i.ibb.co.com/rrjhyc8/D3-D1-A00-F-3738-4-DEE-A27-B-5-B8-F06-FA6-C88.jpg">
-        </div>
-    </div>
-
-    <!-- Реквизиты -->
-    <div id="req" class="screen">
-        <div style="background:white;padding:20px;border-radius:15px;">
-            Реквизиты документа
-        </div>
-    </div>
-
-    <!-- КНОПКИ ВНИЗУ -->
-    <div class="bottom-container">
-
-        <!-- Предъявить документ -->
-        <div id="presentBtn" class="btn primary">
-
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none"
-                 stroke="white" stroke-width="2.2"
-                 stroke-linecap="round" stroke-linejoin="round">
-
-                <!-- Угловые маркеры (как в iOS) -->
-                <path d="M5 9V5H9" />
-                <path d="M19 5H23V9" />
-                <path d="M23 19V23H19" />
-                <path d="M9 23H5V19" />
-
-                <!-- Внутренние QR модули -->
-                <rect x="11" y="11" width="2.6" height="2.6" rx="0.6" fill="white" stroke="none" />
-                <rect x="15.4" y="11" width="2.6" height="2.6" rx="0.6" fill="white" stroke="none" />
-                <rect x="11" y="15.4" width="2.6" height="2.6" rx="0.6" fill="white" stroke="none" />
-                <rect x="15.4" y="15.4" width="2.6" height="2.6" rx="0.6" fill="white" stroke="none" />
-
-            </svg>
-
-
-            Предъявить документ
-        </div>
-
-        <!-- Отправить документы -->
-        <div id="sendBtn" class="btn outline">
-            <!-- Share icon -->
-            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                <path d="M12 16V3" stroke="currentColor" stroke-linecap="round" />
-                <path d="M8 7l4-4 4 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                <rect x="4" y="14" width="16" height="7" rx="2" stroke="currentColor" />
-            </svg>
-            Отправить документы
-        </div>
-
-    </div>
-
-    <script>
-function showScreen(id, el){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-
-  document.getElementById(id).classList.add('active');
-  el.classList.add('active');
-
-  if(id === 'doc'){
-    presentBtn.classList.remove('hidden');
-    sendBtn.classList.remove('hidden');
-  } else {
-    presentBtn.classList.add('hidden');
-    sendBtn.classList.remove('hidden');
-  }
+<script>
+// Показать экран удостоверения
+function showID(){
+  document.getElementById('home').style.display = 'none';
+  document.getElementById('idScreen').style.display = 'flex';
 }
-    </script>
+
+// =================================
+// Pinch zoom
+// =================================
+const img = document.getElementById('idPhoto');
+let scale = 1;
+let startDist = 0;
+
+const container = document.getElementById('zoomContainer');
+
+container.addEventListener('touchmove', e => {
+  e.preventDefault(); // важно!
+}, { passive: false });
+
+container.addEventListener('touchstart', e => {
+  if (e.touches.length === 2) {
+    startDist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+  }
+});
+
+container.addEventListener('touchmove', e => {
+  if (e.touches.length === 2) {
+    const newDist = Math.hypot(
+      e.touches[0].pageX - e.touches[1].pageX,
+      e.touches[0].pageY - e.touches[1].pageY
+    );
+
+    let diff = (newDist - startDist) * 0.01;
+    scale = Math.max(1, Math.min(scale + diff, 6)); 
+    img.style.transform = `scale(${scale})`;
+    startDist = newDist;
+  }
+});
+</script>
 
 </body>
 </html>
-
-
