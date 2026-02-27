@@ -17,7 +17,7 @@ body, html {
   overflow: hidden;
 }
 
-/* Главный экран меню */
+/* Главный экран */
 #home {
   padding: 20px;
 }
@@ -35,95 +35,96 @@ body, html {
   cursor: pointer;
 }
 
-/* Экран с удостоверением */
-<div id="idScreen" style="display:none; flex-direction:column; height:100vh; background:#f4f4f4;">
+/* Экран удостоверения */
+#idScreen {
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  background: #f4f4f4;
+}
 
-  <!-- Верхняя панель -->
-  <div style="
-      height:60px;
-      display:flex;
-      align-items:center;
-      padding:0 16px;
-      background:white;
-      font-weight:600;
-      font-size:18px;
-      box-shadow:0 2px 8px rgba(0,0,0,0.05);
-  ">
-      <div onclick="goBack()" style="margin-right:15px; font-size:22px;">‹</div>
-      Удостоверение личности
-  </div>
+/* Верхняя панель */
+.header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  background: white;
+  font-weight: 600;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-  <!-- Фото зона -->
-  <div style="
-      flex:1;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      overflow:hidden;
-  ">
-
-      <div id="zoomContainer" style="touch-action:none;">
-          <img id="idPhoto" src="id.jpg" 
-          style="max-width:95vw; max-height:80vh; border-radius:16px; transition:0.1s;">
-      </div>
-
-  </div>
-
-</div>
-
-/* Контейнер для зума */
-.zoom-container {
-  width: 100%;
-  height: 100%;
-  touch-action: none; /* важно для pinch zoom */
+/* Фото зона */
+.photo-area {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
-  position: relative;
+}
+
+.zoom-container {
+  touch-action: none;
 }
 
 .zoom-container img {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 95vw;
+  max-height: 80vh;
+  border-radius: 16px;
+  transition: 0.1s;
   transform-origin: center center;
-  transition: 0.1s ease-out;
 }
 </style>
 </head>
 
 <body>
 
+<!-- Главный экран -->
 <div id="home">
   <div class="card" onclick="showID()">
     Удостоверение личности
     <div>›</div>
   </div>
-  <!-- здесь можно добавить другие пункты меню -->
 </div>
 
+<!-- Экран удостоверения -->
 <div id="idScreen">
-  <div class="zoom-container" id="zoomContainer">
-    <!-- фото удостоверения -->
-    <img id="idPhoto" src="id_new.jpeg">
+  
+  <div class="header">
+    <div onclick="goBack()" style="margin-right:15px; font-size:22px;">‹</div>
+    Удостоверение личности
   </div>
+
+  <div class="photo-area">
+    <div class="zoom-container" id="zoomContainer">
+      <img id="idPhoto" src="id_new.jpeg">
+    </div>
+  </div>
+
 </div>
 
 <script>
-// Показать экран удостоверения
+
 function showID(){
   document.getElementById('home').style.display = 'none';
   document.getElementById('idScreen').style.display = 'flex';
 }
 
-// =================================
-// Pinch zoom
-// =================================
+function goBack(){
+  document.getElementById('idScreen').style.display = 'none';
+  document.getElementById('home').style.display = 'block';
+}
+
+/* Pinch zoom только для фото */
 const img = document.getElementById('idPhoto');
+const container = document.getElementById('zoomContainer');
+
 let scale = 1;
 let startDist = 0;
 
-const container = document.getElementById('zoomContainer');
-
 container.addEventListener('touchmove', e => {
-  e.preventDefault(); // важно!
+  e.preventDefault();
 }, { passive: false });
 
 container.addEventListener('touchstart', e => {
@@ -143,13 +144,13 @@ container.addEventListener('touchmove', e => {
     );
 
     let diff = (newDist - startDist) * 0.01;
-    scale = Math.max(1, Math.min(scale + diff, 6)); 
+    scale = Math.max(1, Math.min(scale + diff, 6));
     img.style.transform = `scale(${scale})`;
     startDist = newDist;
   }
 });
+
 </script>
 
 </body>
 </html>
-
